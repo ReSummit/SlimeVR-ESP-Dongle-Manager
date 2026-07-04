@@ -2,6 +2,8 @@ import ElectronAPI from "./electronAPI.js";
 import { ESPLoader } from "../esptool.js";
 import SerialDevice from "./serialDevice.js";
 import ESP32Device from "./esp32Device.js";
+import BridgeDevice from "./serial_bridge/bridgeDevice.js";
+import detectSerialRole from "./serial_bridge/detectSerialRole.js";
 import ProtonDongleDevice from "./protonDongleDevice.js";
 import UnknownDevice from "./unknownDevice.js";``
 
@@ -10,6 +12,7 @@ let maximizeBtn = document.getElementById('maximize-btn');
 let closeBtn = document.getElementById('close-btn');
 let devToolsBtn = document.getElementById('devTools-btn');
 let refreshBtn = document.getElementById('refresh-btn');
+let addDeviceBtn = document.getElementById('addDevice-btn');
 let updateBtn = document.getElementById('update-btn');
 let pageTitle = document.getElementById('pageTitle');
 let appTitle = document.getElementById('appTitle');
@@ -176,6 +179,23 @@ class Main {
         updateBtn.addEventListener('click', () => {
             this.electronAPI.updateApp();
         });
+        addDeviceBtn.addEventListener('click', async () => {
+            // Boards without a USB serial number (e.g. CH340, 1a86:7523) are never
+            // surfaced by getPorts()/connect, so they need an explicit user-gesture
+            // grant. Filters narrow the picker to known USB-serial bridge chips.
+            try {
+                let port = await window.navigator.serial.requestPort({
+                    filters: [
+                        { usbVendorId: 0x1a86, usbProductId: 0x7523 }, // CH340
+                        { usbVendorId: 0x1a86 },                       // other WCH bridges (CH9102 etc.)
+                        { usbVendorId: 0x10c4 },                       // CP210x
+                    ],
+                });
+                this.onDeviceConnected({ target: port });
+            } catch (err) {
+                if (err?.name !== 'NotFoundError') console.error('requestPort failed:', err);
+            }
+        });
         showHiddenDevicesBtn.addEventListener('click', () => {
             this.showHiddenDevices = !this.showHiddenDevices;
         });
@@ -220,6 +240,13 @@ class Main {
     onDeviceConnected(event) {
         let port = event.target;
         if (!port.connected) return;
+        // Avoid duplicate entries when a port is added manually (or the button is
+        // clicked twice) and later also arrives via getPorts()/connect.
+        let existing = [...this.serialDevices.values()].find(d => d.port === port);
+        if (existing != null) {
+            this.currentDevice = existing;
+            return;
+        }
         let portInfo = port.getInfo();
         if (portInfo.usbVendorId == 4617 && portInfo.usbProductId == 30352) {
             //If running SlimeVR Dongle Firmware, vendor ID should be 4617 (0x1209) and product ID should be 30352 (0x76c8)
@@ -234,8 +261,53 @@ class Main {
             console.log('ESP device in download mode detected');
             let device = new ESP32Device(this, port);
             if (this.pendingFirmwareUpdate != null) this.tryDeviceForUpdate(device);
+        } else if (this.isRoleAmbiguous(portInfo.usbVendorId, portInfo.usbProductId)) {
+            // Same board can run bridge/dongle or plain tracker firmware; VID/PID can't
+            // tell them apart, so probe the serial role before picking a device class.
+            console.log('Role-ambiguous serial device detected, probing:', portInfo);
+            this.classifyByProbe(port);
         } else {
             console.log('Unknown serial device detected:', portInfo);
+            new UnknownDevice(this, port);
+        }
+    }
+
+    // Boards whose role (bridge/dongle vs tracker) isn't determined by VID/PID. The known
+    // download-mode (0x303a:0x1001) and Proton dongle (0x1209:0x76c8) IDs are matched by
+    // earlier branches, so they never reach here.
+    isRoleAmbiguous(vid, pid) {
+        if (vid == 6790 && pid == 29987) return true; // CH340 (0x1a86:0x7523)
+        if (vid == 0x303a) return true;               // Espressif native-USB firmware
+        if (vid == 0x1209) return true;               // SlimeVR / pid.codes native-USB firmware
+        return false;
+    }
+
+    /** @type {Set<SerialPort>} ports currently being probed, to avoid double-probing */
+    _probing = new Set();
+
+    async classifyByProbe(port) {
+        if (this._probing.has(port)) return;
+        this._probing.add(port);
+        let role = null;
+        try {
+            role = await detectSerialRole(port);
+        } catch (err) {
+            console.error('Role detection failed:', err);
+        } finally {
+            this._probing.delete(port);
+        }
+        // The probe is async: the port may have been unplugged or already added meanwhile.
+        if (!port.connected) return;
+        if ([...this.serialDevices.values()].some(d => d.port === port)) return;
+        if (role === 'bridge') {
+            console.log('Probe result: bridge');
+            new BridgeDevice(this, port);
+        } else if (role === 'tracker') {
+            console.log('Probe result: tracker');
+            let device = new ESP32Device(this, port);
+            device.name = "Tracker";
+        } else {
+            console.log('Probe result: inconclusive, treating as unknown');
             new UnknownDevice(this, port);
         }
     }

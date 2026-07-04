@@ -9,9 +9,13 @@ function wait(ms) {
 class ProtonDongleDevice extends SerialDevice {
     trackers = new Map();
 
+    // Manager class instantiated in the constructor. Overridable via virtual dispatch
+    // so subclasses (e.g. BridgeDevice) swap in their own manager without a throwaway.
+    get ManagerClass() { return DongleManager; }
+
     constructor(mainInstance, port) {
         super(mainInstance, port, "SlimeVR Dongle");
-        this.manager = new DongleManager(mainInstance, this);
+        this.manager = new this.ManagerClass(mainInstance, this);
     }
 
     async updateFirmware(firmware) {

@@ -32,7 +32,7 @@ class SerialManager extends Manager {
         this.serialContainer.dongleFirmwareButton.classList.toggle('hidden', !value);
     }
 
-    constructor(main, device) {
+    constructor(main, device, baud) {
         super(main, device);
 
         //Connect error elements
@@ -115,7 +115,7 @@ class SerialManager extends Manager {
         } catch (err) {
             try {
                 await esploader.disconnect();
-                await this.device.port.open({ baudRate: 115200 });
+                await this.device.port.open({ baudRate: this.baudRate });
             } catch (disconnectErr) {
                 // Ignore disconnect errors
                 console.error('Failed to disconnect after failed ESPTool connection:', disconnectErr);

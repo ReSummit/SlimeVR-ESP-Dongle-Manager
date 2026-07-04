@@ -148,6 +148,14 @@ function createWindow() {
     return false
   })
 
+  // Needed for navigator.serial.requestPort() (manual "Add Device"). Without a
+  // handler Electron cancels every request. The renderer narrows portList via
+  // VID/PID filters, so selecting the first entry picks the requested chip.
+  mainWindow.webContents.session.on('select-serial-port', (event, portList, webContents, callback) => {
+    event.preventDefault()
+    callback(portList.length > 0 ? portList[0].portId : '')
+  })
+
   mainWindow.loadFile('index.html')
   if (DEBUG) mainWindow.webContents.openDevTools()
   return mainWindow;

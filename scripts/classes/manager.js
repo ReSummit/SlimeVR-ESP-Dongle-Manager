@@ -32,6 +32,10 @@ class Manager {
 
     connected = false;
 
+    // Baud rate used when opening the serial port. Subclasses/devices may override
+    // (e.g. BridgeDevice sets 921600); defaults to 115200 for ESP/dongle devices.
+    baudRate = 115200;
+
     dataBuffer = [];
 
     _overlay = true;
@@ -249,6 +253,13 @@ class Manager {
         console.log('Switched away from device:', this.device.name);
     }
 
+    // Transforms a raw serial chunk before the byte-by-byte line assembly below.
+    // Default is an identity pass-through; subclasses (e.g. BridgeManager) override
+    // this to strip out interleaved binary frames before they reach line splitting.
+    ingestChunk(value) {
+        return value;
+    }
+
     async startReaderLoop () {
         while (this.device.port.readable && !this.exitLoop) {
             this.reader = this.device.port.readable.getReader();
@@ -256,8 +267,12 @@ class Manager {
                 while (true && !this.exitLoop) {
                     const { value, done } = await this.reader.read();
                     if (done) break;
-                    let data = this.dataBuffer;
-                    value.forEach(byte => {
+                    this.ingestChunk(value).forEach(byte => {
+                        // Re-read the buffer each byte: handleLine() reassigns
+                        // this.dataBuffer, so caching it outside the loop would orphan
+                        // the trailing partial line at chunk boundaries (dropping the
+                        // start of the line that straddles two reads).
+                        let data = this.dataBuffer;
                         data.push(byte);
                         // If line starts with [SC], it's a socket-com message and we should only check for \r\n after the prefix
                         if (this.allowSerialCom && data[0] == 91 && data[1] == 83 && data[2] == 67 && data[3] == 93) {
@@ -311,7 +326,8 @@ class Manager {
         this.exitLoop = false;
         this.connecting = true;
         try {
-            await this.device.port.open({baudRate: 115200});
+            console.log(this.device);
+            await this.device.port.open({ baudRate: this.baudRate });
             if (!additionalRequired) this.connected = true;
         } catch (error) {
             this.connectingError = error.message;
