@@ -11,4 +11,6 @@ The following needs to be addressed or answered somewhere in the instructions:
 * "How do I flash a dongle?"
 * "Why do I need to do a wifi channel scan?"
 * "Does this work with secondary trackers?"
-* 
+* "What's an encryption key?"
+* "What if there's multiple people using this receiver?"
+* "How do I know someone else won't see my tracking data?"
