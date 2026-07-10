@@ -37,11 +37,15 @@ Plug in the dongle to your computer via a USB cable. If your dongle uses one por
 
 TODO: Insert two pictures of a 1 usb and 2 usb port dongle
 
-You will also need to plug in your tracker to your computer as well. Ensure that in the Serial Console window within SlimeVR, you start seeing text that contains "`[ESPNow]`". If not, you may want to consult the [Common Issues](https://docs.slimevr.dev/common-issues.html) page.
+Once you plug in your dongle, you should see a SlimeVR icon appear on the top left area of the window after connecting your dongle. Select it and press the "Connect" button below. You should see a set of buttons afterwards. 
+
+In order to optimize the tracking quality, you will need to do a scan of your wireless environment to select the channel, which is where data will be transmitted. Locate and press the "Scan Wireless Environment" button. A new pop-up will appear to show the scan process. Once it is complete, it will auto select the channel with the lowest activity. Confirm by pressing the button below to set the channel.
+
+You will also need to plug in your tracker to your computer as well to pair them. Ensure that in the Serial Console window within SlimeVR, you start seeing text that contains "`[ESPNow]`". If not, you may want to consult the [Common Issues](https://docs.slimevr.dev/common-issues.html) page.
 
 ## Pairing Trackers to the Dongle
 
-In order for the SlimeVR Server to receive tracker data, you must first pair all trackers to the dongle. In the SlimeVR ESP Dongle Manager, your dongle should appear on the top area of the window after connecting your dongle. Select it and press the "Connect" button below. You should see a set of buttons afterwards.
+In order for the SlimeVR Server to receive tracker data, you must pair all trackers to the dongle. In the SlimeVR ESP Dongle Manager, make sure your dongle is selected and connected.
 
 To begin pairing, press the "Enter Pairing Mode" button. You should see in the right side the text "`[CMD] Pairing mode enabled.`"
 
