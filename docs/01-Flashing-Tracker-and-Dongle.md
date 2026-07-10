@@ -17,8 +17,11 @@ There is pre-compiled firmware available to use. Please download the firmware th
 
 TODO: Put here compiled builds from CI for SlimeVR Official Trackers v1.0 and v1.2
 
-* v1.0: Firmware (To be set)
-* v1.2: Firmware (To be set)
+* v1.0: [Firmware (untested)](https://github.com/ReSummit/SlimeVR-Tracker-ESP/releases/download/v0.7.2_ESPNOW/BOARD_SLIMEVR-firmware.bin)
+* v1.2: [Firmware (untested)](https://github.com/ReSummit/SlimeVR-Tracker-ESP/releases/download/v0.7.2_ESPNOW/BOARD_SLIMEVR_V1_2-firmware.bin)
+
+Other tracker builds can be found below (temporary while the official builds don't exist yet):  
+https://github.com/ReSummit/SlimeVR-Tracker-ESP/releases/tag/v0.7.2_ESPNOW
 
 NOTE: For all other tracker builds, please instead download the source code from the repository below and compile manually. Follow the instructions in the DIY Builder's Guide for uploading the tracker firmware, but use the repository linked below. **When setting up the environment, follow the instruction on step 4 regarding clicking the Source Control button and select the esp-now branch (WITH the hyphen)**:  
 [https://github.com/mitzey234/SlimeVR-Tracker-ESP/tree/esp-now](https://github.com/mitzey234/SlimeVR-Tracker-ESP/tree/esp-now)
