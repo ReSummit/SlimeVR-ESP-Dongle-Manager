@@ -9,9 +9,9 @@ This page will guide you through setting up what you need to transisition your S
 
 ## What is ESPNOW?
 
-Previously, SlimeVR ESP32 trackers communicate data about their position and rotation over a wireless connection. Every tracker typically needs to be configured with WiFi credentials in order to connect to a router and transmit the data to the SlimeVR Server application on your computer connected to the same router.
+Previously, SlimeVR ESP type trackers communicate data about their position and rotation over a wireless connection. Every tracker typically needs to be configured with WiFi credentials in order to connect to a router and transmit the data to the SlimeVR Server application on your computer connected to the same router.
 
-Here, instead of the tracker communicating their data over the network, trackers now transmit their data to a dongle connected to your computer. The SlimeVR trackers will transmit their data directly to the dongle instead of over the network. For your SlimeVR ESP32 trackers, this is able to be done with ESPNOW.
+Here, instead of the tracker communicating their data over the network, trackers now transmit their data to a dongle connected to your computer. The SlimeVR trackers will transmit their data directly to the dongle instead of over the network. For your SlimeVR ESP trackers, this is able to be done with ESPNOW.
 
 For your trackers to be able to use ESPNOW, they will need new firmware. In addition, you will also need hardware in order to receive this new data to your computer. This will be explained in the next section.
 
@@ -55,7 +55,7 @@ Below is a running list of microcontrollers that are compatible as a dongle:
 
 ### Software
 
-You will also need to download software in order to connect your trackers to the dongle. Navigate to below to download the program for your operating system:
+Additional software is required to communicate with the dongle. This provides a graphical interface to assist with connecting trackers. For this, you can download the software below. Below are links to the lastest relase for your operating system:
 
 * Windows: [slimevr-esp-dongle-manager-0.2.1.Setup.exe](https://github.com/mitzey234/SlimeVR-ESP-Dongle-Manager/releases/download/v0.2.1/slimevr-esp-dongle-manager-0.2.1.Setup.exe)
 * Linux: [slimevr-esp-dongle-manager_0.2.1_amd64.deb](https://github.com/mitzey234/SlimeVR-ESP-Dongle-Manager/releases/download/v0.2.1/slimevr-esp-dongle-manager_0.2.1_amd64.deb)
