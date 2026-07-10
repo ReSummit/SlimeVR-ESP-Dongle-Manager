@@ -51,3 +51,9 @@ Once you confirm both, you can press the "Flash Tracker" button. Be patient as i
 **WARNING: DO NOT TOUCH THE TRACKER DURING THE FLASH AND 10 SECONDS AFTER COMPLETION.**
 
 After waiting for the confirmation that the flash is complete, as well as waiting 10 seconds, you can turn off and on the tracker. Ensure you see a blue light coming from the tracker. If this happens, you successfully flashed the tracker and can turn it off for now.
+
+Repeat the flashing process for additional trackers.
+
+## Next Steps
+
+Once you have flashed your dongle and trackers, you may proceed to [Pairing ESPNOW Trackers](./02-Pairing_ESPNOW_Trackers.md).
