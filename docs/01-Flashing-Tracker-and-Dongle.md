@@ -50,7 +50,9 @@ Once you confirm both, you can press the "Flash Tracker" button. Be patient as i
 
 **WARNING: DO NOT TOUCH THE TRACKER DURING THE FLASH AND 10 SECONDS AFTER COMPLETION.**
 
-After waiting for the confirmation that the flash is complete, as well as waiting 10 seconds, you can turn off and on the tracker. Ensure you see a blue light coming from the tracker. If this happens, you successfully flashed the tracker and can turn it off for now.
+After waiting for the confirmation that the flash is complete, as well as waiting 10 seconds, you can turn off and on the tracker. 
+
+When you turn on the tracker, ensure you see a stable blue light from the tracker that remains on for aroudn 2 seconds. If this happens, you successfully flashed the tracker and can turn it off for now.
 
 Repeat the flashing process for additional trackers.
 
