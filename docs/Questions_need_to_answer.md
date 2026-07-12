@@ -14,3 +14,11 @@ The following needs to be addressed or answered somewhere in the instructions:
 * "What's an encryption key?"
 * "What if there's multiple people using this receiver?"
 * "How do I know someone else won't see my tracking data?"
+
+# Important configuration notes
+The following are notes regarding configuration that are important for operation:
+
+* Performance of ESPNOW worsens if it is under a large copper / metal area
+    * Ex. Terminal block adapter for ESP32-S3
+* ESPNOW on ESP32-S3 clones bought from Aliexpress may have issues. Cheap as they are, you're mostly guessing that the seller is giving you a good module.
+    * Official ESP modules may be more sensitive to ESPNOW than over wifi (either ESP32 or ESP8266), so needs caution on this.
