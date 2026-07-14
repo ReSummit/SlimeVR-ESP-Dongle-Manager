@@ -46,7 +46,7 @@ module.exports = {
       name: '@electron-forge/publisher-github',
       config: {
         repository: {
-          owner: 'mitzey234',
+          owner: 'ReSummit',
           name: 'SlimeVR-ESP-Dongle-Manager'
         },
         prerelease: false,
