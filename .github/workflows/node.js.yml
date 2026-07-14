@@ -30,7 +30,17 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: npm run publish
+    - name: Publish
+      if: github.ref == 'refs/heads/main'
+      run: npm run publish
+    - name: Build
+      if: github.ref != 'refs/heads/main'
+      run: npm run make
+    - uses: actions/upload-artifact@v4
+      with:
+        name: installers-windows
+        path: out/make/
+
   macos:
 
     runs-on: [macos-latest]
@@ -52,7 +62,17 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: npm run publish
+    - name: Publish
+      if: github.ref == 'refs/heads/main'
+      run: npm run publish
+    - name: Build
+      if: github.ref != 'refs/heads/main'
+      run: npm run make
+    - uses: actions/upload-artifact@v4
+      with:
+        name: installers-macos
+        path: out/make/
+
   ubuntu:
 
     runs-on: [ubuntu-latest]
@@ -74,4 +94,23 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: npm run publish
+    - name: Publish
+      if: github.ref == 'refs/heads/main'
+      run: npm run publish
+    - name: Build
+      if: github.ref != 'refs/heads/main'
+      run: npm run make
+    - uses: actions/upload-artifact@v4
+      with:
+        name: installers-ubuntu
+        path: out/make/
+
+  combine:
+    needs: [windows, macos, ubuntu]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/upload-artifact/merge@v4
+      with:
+        name: installers
+        pattern: installers-*
+        delete-merged: true
