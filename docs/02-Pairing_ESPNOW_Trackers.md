@@ -22,39 +22,76 @@ You should also have the SlimeVR Server installed.
 
 The SlimeVR ESP Dongle Manager provides a graphical interface to manage your dongle and trackers. The picture above demonstrates the available buttons once a dongle is plugged in. These will be the buttons used in order to allow for pairing trackers to the dongle.
 
-## Serial Console
+## Connecting the Dongle
 
-The SlimeVR serial console will also be used to manage sending commands to the tracker. In the SlimeVR Server, navigate through the menu on the left side:  
-`Settings -> Utilities -> Serial Console`
+Plug in the dongle to your computer via a USB cable. If your dongle has two ports, examine the underside of the dongle and check if under one of the ports it says "USB". Connect the port with the "USB" text into your computer.
 
-![An image showing where the serial console is located in SlimeVR Server.](imgs/slimevr_serial_console.png)
+![Image of ESP32-S3 focusing on USB port](imgs/ESP32-S3_USB.jpg)
 
-Here, you will see a text box "Command..." and a drop down that by default says "Auto". You can select a device to communicate with through the dropdown. After selecting a device from the dropdown, you can type in text within the "Command..." text box and press the send button to send commands to the device.
+Open the SlimeVR ESP Dongle Manager. Once the dongle is plugged in, you should see a SlimeVR icon appear in the top left area of the window. Select it by clicking on it.
 
-## Preparing the Dongle and Tracker
+![The Dongle Manager showing the dongle detected as "SlimeVR Dongle" in the top left corner.](imgs/pairing_dongle_detected.jpg)
 
-Plug in the dongle to your computer via a USB cable. If your dongle uses one port, connect that to the computer. If your dongle has two ports, examine the underside of the dongle and check if under one of the ports it says "USB". Connect the port with the "USB" text into your computer.
+After selecting the dongle, press the "Connect" button. You should see a set of buttons appear along with information about your dongle such as the firmware version, MAC address, and channel.
 
-TODO: Insert two pictures of a 1 usb and 2 usb port dongle
+![The Dongle Manager showing the connected dongle with all available buttons.](imgs/pairing_dongle_connected.png)
 
-Once you plug in your dongle, you should see a SlimeVR icon appear on the top left area of the window after connecting your dongle. Select it and press the "Connect" button below. You should see a set of buttons afterwards. 
+## Scanning the Wireless Environment
 
-In order to optimize the tracking quality, you will need to do a scan of your wireless environment to select the channel, which is where data will be transmitted. Locate and press the "Scan Wireless Environment" button. A new pop-up will appear to show the scan process. Once it is complete, it will auto select the channel with the lowest activity. Confirm by pressing the button below to set the channel.
+Before pairing your trackers, you should scan your wireless environment to find the best channel for your dongle to use. Wireless devices around you (routers, phones, other electronics) are constantly using different channels to communicate. By picking a channel with the least activity, your trackers will have a more stable and reliable connection to the dongle.
 
-You will also need to plug in your tracker to your computer as well to pair them. Ensure that in the Serial Console window within SlimeVR, you start seeing text that contains "`[ESPNow]`". If not, you may want to consult the [Common Issues](https://docs.slimevr.dev/common-issues.html) page.
+Press the "Scan Wireless Environment" button. A pop-up will appear showing the scan in progress. The scan will check each of the 11 available channels to see how much wireless traffic is on each one.
+
+![The scanning dialog showing progress as it checks each channel.](imgs/pairing_scan_loading.png)
+
+Once the scan is complete, the bars will fill in to show how much activity was found on each channel. Taller bars mean more traffic on that channel.
+
+![The scan results showing wireless activity levels on each channel.](imgs/pairing_scan_complete.png)
+
+The dongle will automatically recommend the channel with the lowest activity. The recommended channel will be highlighted and displayed below the chart. You can also click on any channel to manually select a different one if you prefer.
+
+![The scan results showing the recommended channel with an explanation of the bar chart.](imgs/pairing_scan_recommended.png)
+
+Confirm your selection to set the channel. Your dongle is now ready for pairing.
 
 ## Pairing Trackers to the Dongle
 
-In order for the SlimeVR Server to receive tracker data, you must pair all trackers to the dongle. In the SlimeVR ESP Dongle Manager, make sure your dongle is selected and connected.
+In order for the SlimeVR Server to receive tracker data, you must pair each tracker to the dongle. This is done in two parts: putting the dongle into pairing mode using the Dongle Manager, and then sending a pair command from the tracker.
 
-To begin pairing, press the "Enter Pairing Mode" button. You should see in the right side the text "`[CMD] Pairing mode enabled.`"
+### Step 1: Enter Pairing Mode on the Dongle
 
-Within 60 seconds, go to the SlimeVR Server application in the serial console and type in the "Commands..." textbox "`pair`". After this, press enter on your keyboard or use the mouse to click on the "Send button". If everything is working, you should eventually see text on the SlimeVR serial console the text "`[ESPNow] Successfully paired with gateway, establishing connection...`". This confirms your tracker is now connected to your dongle.
+In the SlimeVR ESP Dongle Manager, make sure your dongle is selected and connected. Press the "Enter Pairing Mode" button. You should see in the log on the right side the text "`[CMD] Pairing mode enabled.`"
 
-Repeat the pairing process for every tracker you plan on using with the dongle.
+![The Dongle Manager with pairing mode active, showing the "Exit Pairing Mode" button and the pairing confirmation in the log.](imgs/pairing_mode_active.png)
 
-After you pair all trackers, you should see your paired tracker in the SlimeVR ESP Dongle Manager on the left side, each denoted with a number. You can now test the dongle connection by going to the SlimeVR Server application and pressing the Home button on the left side. Verify that tracker activity occurs on the server when you move the tracker.
+### Step 2: Connect a Tracker and Send the Pair Command
 
-You are now ready to continue with assigning trackers as usual and setup SlimeVR for full body tracking!
+Plug in the tracker you want to pair to your computer using a USB cable. In the SlimeVR ESP Dongle Manager, you should see the tracker appear as a new device in the top bar next to your dongle. Click on it, then press the "Connect to port" button.
 
+![The Dongle Manager showing the tracker appearing in the top bar next to the dongle, with the "Connect to port" button highlighted.](imgs/pairing_tracker_connect.png)
 
+After connecting, you will see a command input box at the bottom of the window. This is where you will send commands to the tracker.
+
+![The Dongle Manager connected to the tracker, with the command input box highlighted at the bottom.](imgs/pairing_tracker_command_box.png)
+
+Type `pair` in the command box and press Enter. You should see messages confirming that the tracker has entered pairing mode and is waiting for the dongle.
+
+![The command output showing the pair command being sent and the tracker entering pairing mode.](imgs/pairing_tracker_pair_command.png)
+
+If everything is working, you should see the text "`[ESPNow] Successfully paired with gateway, establishing connection...`" in the console. This confirms your tracker is now paired with your dongle.
+
+Once paired, you can disconnect the tracker from USB. It will now communicate wirelessly with the dongle.
+
+### Step 3: Repeat for All Trackers
+
+Repeat the pairing process for every tracker you plan on using with the dongle. You do not need to exit and re-enter pairing mode between trackers — the dongle stays in pairing mode until you press "Exit Pairing Mode" or 60 seconds of inactivity passes.
+
+After you have paired all trackers, you should see each paired tracker listed in the SlimeVR ESP Dongle Manager on the left side, each denoted with a number.
+
+## Verifying the Connection
+
+You can now test the dongle connection by opening the SlimeVR Server application and pressing the Home button on the left side. Move a tracker and verify that the tracker activity appears on the server.
+
+After pairing, trackers will automatically reconnect to the dongle whenever they are powered on. You do not need to pair them again unless you perform a factory reset on the dongle.
+
+You are now ready to continue with assigning trackers as usual and set up SlimeVR for full body tracking!
