@@ -68,7 +68,7 @@ Unfortunately, this means the tracker was not able to be flashed over OTA. This 
 
 If OTA flashing fails, you will need to flash the tracker by connecting it directly to your computer with a USB cable instead. The SlimeVR docs have a guide that walks you through this process, including how to open up your tracker and put it into flash mode for your specific PCB revision:
 
-[Updating Firmware — SlimeVR Docs](https://docs.slimevr.dev/updating-firmware.html)
+[Updating Firmware (USB Recovery) — SlimeVR Docs](https://docs.slimevr.dev/updating-firmware.html#usb-recovery)
 
 Follow the **USB recovery (serial flashing)** instructions on that page. Once your tracker is recovered, you can try the OTA process again with the ESPNOW firmware you downloaded from the [Flashing Firmware](#flashing-firmware-to-trackers) step.
 
