@@ -5,7 +5,29 @@ This fork of the dongle manager adds in support for interfacing with dongles usi
 This app is meant to be used alongside the dongle firmware below, but can also be used with the original dongle firmware with HID:
 https://github.com/ReSummit/SlimeVR-Receiver-ESP-Now/tree/esp8266
 
-**NOTE: You cannot connect to the dongle through the manager and use the bridge program in the above linked repository at the same time. If you want to change settings on the dongle, you will need to stop the bridge program before connecting with the dongle manager.** 
+**NOTE: You cannot connect to the dongle through the manager and use the bridge program in the above linked repository at the same time.** 
+
+**If you want to change settings on the dongle, you will need to stop the bridge program before connecting with the dongle manager. Conversely, if you want to use the dongle with the SlimeVR server, you must disconenct the dongle from the dongle manager before running the bridge program.** 
+
+## Modifications
+
+Interfacing with the dongle manager is the same, just that you now have support for serial based dongles. However, connecting to them involves a different workflow.
+
+### Connecting to Serial Dongles
+
+- Dongles with a recognized USB serial number will be detected automatically on startup, the same as HID dongles. It may take a bit longer for a tracker to be visible in order to check if a tracker is a serial based dongle (up to 7 seconds).
+- For boards without a USB serial number (e.g. CH340), you need to manually trigger detection:
+  1. Click the **plug icon** in the title bar (next to the minimize button).
+  2. The app will automatically scan for and probe any connected serial devices at 921600 baud for up to 7 seconds to determine if they are bridge dongles or plain ESP devices.
+  3. If a device responds, it will appear in the manager as a bridge dongle ready for use.
+- On **Linux**, if the dongle is unplugged and plugged back in, you will need to click the plug icon again to re-detect it. This is not required on Windows.
+
+### Other Changes
+
+- **Linux CH340 fix** — Boards using a CH340 or similar TTL chip that were not detected due to how Linux handles serial enumeration are now supported.
+- **Supported USB-serial chips** — CH340, CH9102, CP210x, and Espressif native-USB are recognized for filtering.
+- **Bridge firmware baud rate** — Serial bridge dongles communicate at 921600 baud (vs. 115200 for standard HID dongles).
+- **Tracker data handled separately** — The dongle manager only handles management commands. Binary tracker data frames are handled by the separate Python bridge program, which is why both programs cannot connect to the dongle at the same time.
 
 # SlimeVR-ESP-Dongle-Manager
 This is an Electron application to help manage and control firmware on an ESP-based SlimeVR tracker dongle.
