@@ -1,3 +1,12 @@
+# HID Serial Bridge Fork
+
+This fork of the dongle manager adds in support for interfacing with dongles using serial as the communication method versus HID. This also adds fixes for linux where trackers using a CH340 or similar TTL chip do not get detected in the application due to how linux does serial enumeration.
+
+This app is meant to be used alongside the dongle firmware below, but can also be used with the original dongle firmware with HID:
+https://github.com/ReSummit/SlimeVR-Receiver-ESP-Now/tree/esp8266
+
+**NOTE: You cannot connect to the dongle through the manager and use the bridge program in the above linked repository at the same time. If you want to change settings on the dongle, you will need to stop the bridge program before connecting with the dongle manager.** 
+
 # SlimeVR-ESP-Dongle-Manager
 This is an Electron application to help manage and control firmware on an ESP-based SlimeVR tracker dongle.
 ![alt text](images/Shot1.png?raw=true)
