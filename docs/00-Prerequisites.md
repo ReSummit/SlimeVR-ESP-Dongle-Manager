@@ -49,6 +49,8 @@ It is common to find very cheap ESP32-S3 boards from marketplaces like Aliexpres
 
 * **Quality is inconsistent.** Clone boards from unknown sellers may use lower quality components. There is no guarantee that the wireless performance will match an official ESP module, and some boards may not work reliably with ESPNOW at all.
 * **ESPNOW can be more sensitive than WiFi.** A board that works fine over WiFi may still have poor ESPNOW performance if the antenna or radio components are subpar. This is because ESPNOW relies on direct device-to-device communication without a router to help manage the signal.
+* **N16R8 variants are overkill.** Those variants are meant to allow more space for firmware. The receiver firmware does not need this much space, so unless the ESP32-S3 you're looking at is cheaper than the other variants, you don't need to go for it.
+* **If there's only one USB port, don't assume USB-OTG (HID) capabilities.** The <span style="color:#2ecc40;font-weight:bold">Seeed Studio XIAO ESP32-S3 Plus</span> indicated in the board list below is wired correctly for USB-OTG. However, other boards with only one USB port may or may not have USB-OTG wired properly. Unless there are other people that have confirmed USB-OTG works for that board or the manufacturer specifies it, you may want to consider a different board if it isn't in the [compatible dongle hardware](#compatible-dongle-hardware) below.
 
 If you are buying from a lesser-known seller, be prepared for the possibility that the board may not work well. When possible, prefer boards from established brands (such as Seeed Studio, Adafruit, or Espressif's own devkits) for a more reliable experience.
 
@@ -74,7 +76,7 @@ Below is a running list of microcontrollers that are compatible as a dongle:
         <td data-label="Name: "><span style="color:#2ecc40;font-weight:bold">Seeed Studio XIAO ESP32-S3 Plus</span></td>
         <td data-label="Type: ">ESP32-S3</td>
         <td data-label="Typical Price (USD): ">~$7.90</td>
-        <td data-label="Notes: ">Smallest microcontroller with HID. Has external antenna support.</td>
+        <td data-label="Notes: ">Smallest microcontroller with HID. Has external antenna support and small footprint with HID support.</td>
       </tr>
     </tbody>
   </table>
